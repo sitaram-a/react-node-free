@@ -1,0 +1,9 @@
+# Backend
+backend/node_modules
+backend/.env
+
+# Frontend (extra safety)
+frontend/.env
+
+# OS
+.DS_Store
