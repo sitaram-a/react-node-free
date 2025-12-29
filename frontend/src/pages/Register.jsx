@@ -9,6 +9,7 @@ function Register() {
   });
 
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,6 +18,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+    setLoading(true);
 
     try {
       const res = await API.post("/api/users/add", form);
@@ -24,45 +26,131 @@ function Register() {
       setForm({ name: "", email: "", password: "" });
     } catch (err) {
       setMessage(err.response?.data?.message || "Error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: 40 }}>
-      <h2>Register</h2>
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h2 style={styles.title}>Create Account</h2>
+        <p style={styles.subtitle}>Register to get started</p>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          name="name"
-          placeholder="Name"
-          value={form.name}
-          onChange={handleChange}
-        />
-        <br /><br />
+        <form onSubmit={handleSubmit}>
+          <div style={styles.inputGroup}>
+            <label>Name</label>
+            <input
+              style={styles.input}
+              name="name"
+              placeholder="Your name"
+              value={form.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <input
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-        />
-        <br /><br />
+          <div style={styles.inputGroup}>
+            <label>Email</label>
+            <input
+              style={styles.input}
+              type="email"
+              name="email"
+              placeholder="you@example.com"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-        />
-        <br /><br />
+          <div style={styles.inputGroup}>
+            <label>Password</label>
+            <input
+              style={styles.input}
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <button type="submit">Register</button>
-      </form>
+          <button style={styles.button} type="submit" disabled={loading}>
+            {loading ? "Creating..." : "Register"}
+          </button>
+        </form>
 
-      {message && <p>{message}</p>}
+        {message && (
+          <p
+            style={{
+              ...styles.message,
+              color: message.includes("success") ? "#16a34a" : "#dc2626"
+            }}
+          >
+            {message}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
 
 export default Register;
+
+const styles = {
+  container: {
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "linear-gradient(135deg, #667eea, #764ba2)",
+    padding: "20px"
+  },
+  card: {
+    width: "100%",
+    maxWidth: "420px",
+    background: "#fff",
+    borderRadius: "16px",
+    padding: "32px",
+    boxShadow: "0 20px 40px rgba(0,0,0,0.15)"
+  },
+  title: {
+    textAlign: "center",
+    marginBottom: "8px"
+  },
+  subtitle: {
+    textAlign: "center",
+    color: "#6b7280",
+    marginBottom: "24px"
+  },
+  inputGroup: {
+    marginBottom: "16px",
+    display: "flex",
+    flexDirection: "column"
+  },
+  input: {
+    padding: "12px 14px",
+    borderRadius: "10px",
+    border: "1px solid #d1d5db",
+    fontSize: "14px",
+    outline: "none"
+  },
+  button: {
+    width: "100%",
+    padding: "12px",
+    marginTop: "10px",
+    borderRadius: "12px",
+    border: "none",
+    background: "#4f46e5",
+    color: "#fff",
+    fontSize: "15px",
+    fontWeight: "600",
+    cursor: "pointer"
+  },
+  message: {
+    textAlign: "center",
+    marginTop: "16px",
+    fontSize: "14px"
+  }
+};
