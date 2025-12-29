@@ -98,15 +98,18 @@ function Register() {
 
 export default Register;
 
+
 const styles = {
-  container: {
-    minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "linear-gradient(135deg, #667eea, #764ba2)",
-    padding: "20px"
-  },
+ container: {
+  minHeight: "100vh",
+  width: "99vw",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "linear-gradient(135deg, #667eea, #764ba2)",
+  padding: "20px"
+}
+,
   card: {
     width: "100%",
     maxWidth: "420px",
