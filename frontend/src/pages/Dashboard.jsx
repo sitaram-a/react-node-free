@@ -1,49 +1,82 @@
-// import { LogOut } from "lucide-react";
+import { useState } from "react";
+import API from "../api/api";
 
 function Dashboard() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(storedUser);
+  const [edit, setEdit] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = "/";
   };
 
+  const handleUpdate = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await API.put(
+        "/api/users/profile",
+        { name: user.name, email: user.email },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      setUser(res.data.user);
+      setEdit(false);
+      setMessage("Profile updated successfully ✅");
+    } catch (err) {
+      setMessage("Update failed ❌");
+    }
+  };
+
   return (
     <div style={styles.page}>
-      {/* Top Bar */}
       <header style={styles.header}>
-        <h2 style={styles.logo}>MyApp</h2>
-        <button style={styles.logoutBtn} onClick={handleLogout}>
+        <h2>MyApp</h2>
+        <button onClick={handleLogout} style={styles.logoutBtn}>
           Logout
         </button>
       </header>
 
-      {/* Main Content */}
       <main style={styles.container}>
         <div style={styles.card}>
-          <h3 style={styles.welcome}>Welcome back 👋</h3>
+          <h3>Profile</h3>
 
-          <div style={styles.profile}>
-            <div style={styles.avatar}>
-              {user?.name?.charAt(0).toUpperCase()}
-            </div>
-
-            <div>
-              <p style={styles.name}>{user?.name}</p>
-              <p style={styles.email}>{user?.email}</p>
-            </div>
+          <div style={styles.field}>
+            <label>Name</label>
+            <input
+              disabled={!edit}
+              value={user.name}
+              onChange={(e) => setUser({ ...user, name: e.target.value })}
+            />
           </div>
 
-          <div style={styles.stats}>
-            <div style={styles.statBox}>
-              <p>Total Logins</p>
-              <h4>12</h4>
-            </div>
-            <div style={styles.statBox}>
-              <p>Account Status</p>
-              <h4 style={{ color: "#22c55e" }}>Active</h4>
-            </div>
+          <div style={styles.field}>
+            <label>Email</label>
+            <input
+              disabled={!edit}
+              value={user.email}
+              onChange={(e) => setUser({ ...user, email: e.target.value })}
+            />
           </div>
+
+          {edit ? (
+            <button onClick={handleUpdate} style={styles.saveBtn}>
+              Save Changes
+            </button>
+          ) : (
+            <button onClick={() => setEdit(true)} style={styles.editBtn}>
+              Edit Profile
+            </button>
+          )}
+
+          {message && <p style={styles.message}>{message}</p>}
         </div>
       </main>
     </div>
@@ -55,21 +88,16 @@ export default Dashboard;
 const styles = {
   page: {
     minHeight: "100vh",
-    background: "linear-gradient(135deg, #020617, #020617)",
+    background: "#020617",
     color: "#fff"
   },
   header: {
     height: "64px",
     padding: "0 24px",
     display: "flex",
-    alignItems: "center",
     justifyContent: "space-between",
-    background: "#020617",
+    alignItems: "center",
     borderBottom: "1px solid #1e293b"
-  },
-  logo: {
-    margin: 0,
-    fontSize: "20px"
   },
   logoutBtn: {
     background: "#ef4444",
@@ -77,8 +105,7 @@ const styles = {
     padding: "8px 14px",
     borderRadius: "8px",
     color: "#fff",
-    cursor: "pointer",
-    fontWeight: "500"
+    cursor: "pointer"
   },
   container: {
     display: "flex",
@@ -88,52 +115,38 @@ const styles = {
   },
   card: {
     width: "100%",
-    maxWidth: "520px",
+    maxWidth: "420px",
     background: "#020617",
+    padding: "30px",
     borderRadius: "16px",
-    padding: "32px",
     boxShadow: "0 25px 50px rgba(0,0,0,0.4)"
   },
-  welcome: {
-    marginBottom: "24px"
-  },
-  profile: {
+  field: {
     display: "flex",
-    alignItems: "center",
-    gap: "16px",
-    marginBottom: "24px"
+    flexDirection: "column",
+    marginBottom: "16px"
   },
-  avatar: {
-    width: "56px",
-    height: "56px",
-    borderRadius: "50%",
+  editBtn: {
+    width: "100%",
+    padding: "10px",
+    borderRadius: "10px",
     background: "#4f46e5",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "20px",
-    fontWeight: "700"
+    border: "none",
+    color: "#fff",
+    cursor: "pointer"
   },
-  name: {
-    margin: 0,
-    fontSize: "16px",
-    fontWeight: "600"
+  saveBtn: {
+    width: "100%",
+    padding: "10px",
+    borderRadius: "10px",
+    background: "#22c55e",
+    border: "none",
+    color: "#000",
+    cursor: "pointer"
   },
-  email: {
-    margin: 0,
-    fontSize: "14px",
-    color: "#94a3b8"
-  },
-  stats: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
-    gap: "16px"
-  },
-  statBox: {
-    background: "#020617",
-    padding: "16px",
-    borderRadius: "12px",
+  message: {
+    marginTop: "16px",
     textAlign: "center",
-    border: "1px solid #1e293b"
+    color: "#22c55e"
   }
 };
