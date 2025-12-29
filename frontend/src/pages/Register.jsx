@@ -102,7 +102,7 @@ export default Register;
 const styles = {
  container: {
   minHeight: "100vh",
-  width: "99vw",
+  width: "100vw",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
