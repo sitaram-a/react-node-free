@@ -234,7 +234,7 @@ const deleteSkill = async (id) => {
     <div style={styles.card}>
       <h4>User List</h4>
       <table style={styles.table}>
-        <thead>
+        <thead style={{textAlign:"justify"}}>
           <tr>
             <th>Name</th>
             <th>Email</th>
@@ -494,16 +494,17 @@ const styles = {
     fontSize: "13px"
   },
   editBtnSmall: {
-  padding: "6px 10px",
+  padding: "5px 10px",
   marginRight: "6px",
   background: "#3b82f6",
   border: "none",
   borderRadius: "6px",
   color: "#fff",
-  cursor: "pointer"
+  cursor: "pointer",
+  marginBottom:"5px"
 },
 deleteBtn: {
-  padding: "6px 10px",
+  padding: "5px 10px",
   background: "#ef4444",
   border: "none",
   borderRadius: "6px",
@@ -511,7 +512,7 @@ deleteBtn: {
   cursor: "pointer"
 },
 saveBtn: {
-  padding: "6px 10px",
+  padding: "5px 10px",
   background: "#22c55e",
   border: "none",
   borderRadius: "6px",
@@ -519,7 +520,7 @@ saveBtn: {
   cursor: "pointer"
 },
 cancelBtn: {
-  padding: "6px 10px",
+  padding: "5px 10px",
   background: "#64748b",
   border: "none",
   borderRadius: "6px",
