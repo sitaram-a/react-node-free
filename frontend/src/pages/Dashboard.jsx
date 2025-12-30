@@ -1,5 +1,6 @@
 import { useState } from "react";
 import API from "../api/api";
+import { jsxs } from "react/jsx-runtime";
 
 function Dashboard() {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -209,17 +210,17 @@ const deleteSkill = async (id) => {
     <div style={styles.card}>
       <h4>Add User</h4>
       <input
-        placeholder="Name"
+ style={styles.inputfield}        placeholder="Name"
         value={form.name}
         onChange={(e) => setForm({ ...form, name: e.target.value })}
       />
       <input
-        placeholder="Email"
+ style={styles.inputfield}        placeholder="Email"
         value={form.email}
         onChange={(e) => setForm({ ...form, email: e.target.value })}
       />
       <input
-        placeholder="Password"
+ style={styles.inputfield}        placeholder="Password"
         type="password"
         value={form.password}
         onChange={(e) => setForm({ ...form, password: e.target.value })}
@@ -246,7 +247,7 @@ const deleteSkill = async (id) => {
               <td>
                 {editId === u._id ? (
                   <input
-                    value={editForm.name}
+ style={styles.inputfield}                    value={editForm.name}
                     onChange={(e) =>
                       setEditForm({ ...editForm, name: e.target.value })
                     }
@@ -259,7 +260,7 @@ const deleteSkill = async (id) => {
               <td>
                 {editId === u._id ? (
                   <input
-                    value={editForm.email}
+ style={styles.inputfield}                    value={editForm.email}
                     onChange={(e) =>
                       setEditForm({ ...editForm, email: e.target.value })
                     }
@@ -313,27 +314,27 @@ const deleteSkill = async (id) => {
 
     <div style={styles.card}>
       <input
-        placeholder="Name"
+ style={styles.inputfield}        placeholder="Name"
         value={profile.name}
         onChange={(e) =>
           setProfile({ ...profile, name: e.target.value })
         }
       />
       <input
-        placeholder="Title (e.g. Full Stack Developer)"
+ style={styles.inputfield}        placeholder="Title (e.g. Full Stack Developer)"
         value={profile.title}
         onChange={(e) =>
           setProfile({ ...profile, title: e.target.value })
         }
       />
       <input
-        placeholder="Profile Image URL"
+ style={styles.inputfield}        placeholder="Profile Image URL"
         value={profile.image}
         onChange={(e) =>
           setProfile({ ...profile, image: e.target.value })
         }
       />
-      <textarea
+      <textarea style={styles.textareaas}
         placeholder="Short bio / About me"
         rows="4"
         value={profile.bio}
@@ -358,14 +359,14 @@ const deleteSkill = async (id) => {
 
     <div style={styles.card}>
       <input
-        placeholder="Skill name"
+ style={styles.inputfield}        placeholder="Skill name"
         value={skillForm.name}
         onChange={(e) =>
           setSkillForm({ ...skillForm, name: e.target.value })
         }
       />
       <input
-        placeholder="Level (0-100)"
+ style={styles.inputfield}        placeholder="Level (0-100)"
         type="number"
         value={skillForm.level}
         onChange={(e) =>
@@ -454,7 +455,8 @@ const styles = {
     background: "#4f46e5",
     border: "none",
     color: "#fff",
-    cursor: "pointer"
+    cursor: "pointer",
+    margin:"5px 0"
   },
   main: {
     flex: 1,
@@ -465,12 +467,14 @@ const styles = {
     padding: "20px",
     borderRadius: "12px",
     marginBottom: "20px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.4)"
+    boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
+    display:"flex",
+    alignItems:"center"
   },
   primaryBtn: {
     marginTop: "10px",
     padding: "10px",
-    width: "100%",
+    width: "10%",
     borderRadius: "8px",
     background: "#22c55e",
     border: "none",
@@ -520,5 +524,17 @@ cancelBtn: {
   border: "none",
   borderRadius: "6px",
   cursor: "pointer"
+},
+inputfield:{
+    height: "30px",
+    borderRadius: "6px",
+    padding: "5px",
+    marginRight: "5px"
+},
+textareaas:{
+    marginRight:"10px",
+    padding:"5px",
+    width:"30%",
+    borderRadius:"5px"
 }
 };
