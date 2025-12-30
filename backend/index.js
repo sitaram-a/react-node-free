@@ -1,4 +1,6 @@
 const userRoutes = require("./routes/userRoutes");
+const profileRoutes = require("./routes/profileRoutes");
+const skillRoutes = require("./routes/skillRoutes");
 
 const express = require("express");
 const cors = require("cors");
@@ -10,7 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/users", userRoutes);
-
+app.use("/api/profile", profileRoutes);
+app.use("/api/skills", skillRoutes);
 
 // 🔹 CONNECT TO MONGODB
 mongoose
